@@ -25,7 +25,7 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     movies: () => client.movie.findMany(),
-    movie: () => ({ title: "Hello, Apollo", year: 2021 })
+    movie: () => ({ title: "Hello, Apollo", year: 2021 }),
   },
   Mutation: {
     createMovie: (_, { title, year, genre }) =>
@@ -33,19 +33,19 @@ const resolvers = {
         data: {
           title,
           year,
-          genre
-        }
+          genre,
+        },
       }),
     deleteMovie: (_, { title }) => {
       console.log(title);
       return true;
-    }
-  }
+    },
+  },
 };
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
 });
 
 server
