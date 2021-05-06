@@ -6,8 +6,11 @@ Instaclone Back-End
 
 - [x] Create Account
 - [x] See Profile
-- [ ] Login
+- [x] Login
 - [ ] Edit Profile
+- [ ] Change Avatar (Image Upload)
 - [ ] Follow User
 - [ ] Unfollow User
-- [ ] Change Avatar (Image Upload)
+- [ ] Search Users
+- [ ] See Followers
+- [ ] See Following
