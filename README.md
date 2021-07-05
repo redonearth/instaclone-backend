@@ -2,7 +2,7 @@
 
 Instaclone Back-End
 
-## User:
+## User (Done)
 
 - [x] Create Account
 - [x] See Profile
@@ -14,7 +14,7 @@ Instaclone Back-End
 - [x] See Followers with Pagination
 - [x] See Following with Pagination
 - [x] Computed Fields
-- [ ] Search Users
+- [x] Search Users
 
 ## Photos
 
