@@ -1,4 +1,6 @@
-export default {
+import { Resolvers } from '../../types';
+
+const resolvers: Resolvers = {
   Query: {
     searchUsers: async (_, { keyword, lastId }, { client }) =>
       await client.user.findMany({
@@ -27,3 +29,5 @@ export default {
       }),
   },
 };
+
+export default resolvers;
