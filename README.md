@@ -2,6 +2,8 @@
 
 Instaclone Back-End
 
+## TypeScript (Done)
+
 ## User (Done)
 
 - [x] Create Account
@@ -18,8 +20,8 @@ Instaclone Back-End
 
 ## Photos
 
-- [ ] Upload Photo
-- [ ] See Photo
+- [x] Upload Photo (Parse #)
+- [x] See Photo
 - [ ] See Hashtags
 - [ ] Search Photos
 - [ ] Edit Photo
