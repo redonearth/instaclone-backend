@@ -1,8 +1,6 @@
-import client from '../client';
-
 export default {
   User: {
-    totalFollowing: ({ id }) =>
+    totalFollowing: ({ id }, _, { client }) =>
       client.user.count({
         where: {
           followers: {
@@ -12,7 +10,7 @@ export default {
           },
         },
       }),
-    totalFollowers: ({ id }) =>
+    totalFollowers: ({ id }, _, { client }) =>
       client.user.count({
         where: {
           following: {
@@ -28,7 +26,7 @@ export default {
       }
       return id === loggedInUser.id;
     },
-    isFollowing: async ({ id }, _, { loggedInUser }) => {
+    isFollowing: async ({ id }, _, { client, loggedInUser }) => {
       if (!loggedInUser) {
         return false;
       }

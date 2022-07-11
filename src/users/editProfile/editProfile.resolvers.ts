@@ -1,12 +1,13 @@
 import { createWriteStream } from 'fs';
 import bcrypt from 'bcrypt';
-import client from '../../client';
 import { protectedResolver } from '../users.utils';
+import { Resolver } from '../../types';
+import GraphQLUpload from 'graphql-upload/GraphQLUpload.js';
 
-const resolverFunction = async (
+const resolverFunction: Resolver = async (
   _,
   { firstName, lastName, username, email, password: newPassword, bio, avatar },
-  { loggedInUser }
+  { client, loggedInUser }
 ) => {
   let avatarUrl = null;
   if (avatar) {
@@ -50,6 +51,7 @@ const resolverFunction = async (
 };
 
 export default {
+  Upload: GraphQLUpload,
   Mutation: {
     editProfile: protectedResolver(resolverFunction),
   },

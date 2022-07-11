@@ -1,10 +1,9 @@
-import client from '../../client';
 import { protectedResolver } from '../../users/users.utils';
 
 export default {
   Mutation: {
     uploadPhoto: protectedResolver(
-      async (_, { file, caption }, { loggedInUser }) => {
+      async (_, { file, caption }, { client, loggedInUser }) => {
         let hashtagObj = [];
         if (caption) {
           // parse caption

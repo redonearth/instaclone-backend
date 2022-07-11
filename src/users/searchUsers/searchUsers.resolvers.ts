@@ -1,8 +1,6 @@
-import client from '../../client';
-
 export default {
   Query: {
-    searchUsers: async (_, { keyword, lastId }) =>
+    searchUsers: async (_, { keyword, lastId }, { client }) =>
       await client.user.findMany({
         where: {
           OR: [
