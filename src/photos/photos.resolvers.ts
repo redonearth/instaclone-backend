@@ -19,6 +19,28 @@ const resolvers: Resolvers = {
         },
       }),
   },
+  Hashtag: {
+    photos: ({ id }, { page }, { client }) => {
+      console.log(page);
+      return client.hashtag
+        .findUnique({
+          where: {
+            id,
+          },
+        })
+        .photos();
+    },
+    totalPhotos: ({ id }, _, { client }) =>
+      client.photo.count({
+        where: {
+          hashtags: {
+            some: {
+              id,
+            },
+          },
+        },
+      }),
+  },
 };
 
 export default resolvers;
