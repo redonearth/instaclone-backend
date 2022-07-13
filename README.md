@@ -41,7 +41,7 @@ Instaclone Back-End
 
 ## Refactor
 
-- [ ] Mutation Responses
+- [x] Mutation Responses
 
 ## Extras
 
