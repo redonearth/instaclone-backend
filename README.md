@@ -30,13 +30,13 @@ Instaclone Back-End
 - [x] See Feed
 - [x] See Photo Comments
 - [x] Is Mine
-- [ ] Delete Photo
+- [x] Delete Photo
 
 ## Comments
 
 - [x] Comment on Photo
 - [x] Is Mine
-- [ ] Delete Comment
+- [x] Delete Comment
 - [ ] Edit Comment
 
 ## Extras
