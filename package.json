@@ -26,6 +26,7 @@
     "@prisma/client": "^2.30.3",
     "apollo-server": "^3.9.0",
     "apollo-server-express": "^3.9.0",
+    "aws-sdk": "^2.1173.0",
     "bcrypt": "^5.0.1",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
@@ -48,8 +49,5 @@
     "prisma": "^2.30.3",
     "ts-node": "^10.8.2",
     "typescript": "^4.7.4"
-  },
-  "resolutions": {
-    "fs-capacitor": "^6.2.0"
   }
 }
