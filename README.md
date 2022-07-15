@@ -50,6 +50,6 @@ Instaclone Back-End
 ## Direct Messages
 
 - [x] See Rooms
-- [ ] Send Message (Create Room)
+- [x] Send Message (Create Room)
 - [ ] See Room
 - [ ] Real-time Messages
