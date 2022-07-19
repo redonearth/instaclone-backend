@@ -1,58 +1,87 @@
 require('dotenv').config();
-import express from 'express';
+import express, { Express } from 'express';
 import logger from 'morgan';
-import { ApolloServer } from 'apollo-server-express';
+import { ApolloServer, ExpressContext } from 'apollo-server-express';
 import { schema } from './schema';
+import { execute, subscribe } from 'graphql';
 import { getUser, protectedResolver } from './users/users.utils';
 import client from './client';
 import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js';
-import { createServer } from 'http';
+import { createServer, Server } from 'http';
 import { WebSocketServer } from 'ws';
-import { useServer } from 'graphql-ws/lib/use/ws';
-import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
+import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
+import { User } from '@prisma/client';
 
-const app = express();
-const PORT = process.env.PORT;
+interface ConnectionParams {
+  token?: string;
+  'content-type'?: string;
+}
 
-const httpServer = createServer(app);
-const wsServer = new WebSocketServer({
-  server: httpServer,
-  path: '/graphql',
-});
-const serverCleanup = useServer({ schema }, wsServer);
+const startServer = async () => {
+  const PORT = process.env.PORT;
 
-const apollo = new ApolloServer({
-  schema,
-  context: async ({ req }) => {
-    return {
-      client,
-      loggedInUser: await getUser(req.headers.token),
-      protectedResolver,
-    };
-  },
-  csrfPrevention: true,
-  cache: 'bounded',
-  plugins: [
-    ApolloServerPluginDrainHttpServer({ httpServer }),
+  const app: Express = express();
+  app.use(logger('tiny'));
+  app.use(graphqlUploadExpress());
+  app.use('/static', express.static('uploads'));
+
+  const httpServer: Server = createServer(app);
+  const wsServer = new WebSocketServer({
+    server: httpServer,
+    path: '/graphql',
+  });
+  const subscriptionServer: SubscriptionServer = SubscriptionServer.create(
     {
-      async serverWillStart() {
-        return {
-          async drainServer() {
-            await serverCleanup.dispose();
-          },
-        };
+      schema,
+      execute,
+      subscribe,
+      onConnect: async ({ token }: ConnectionParams) => {
+        if (!token) {
+          throw new Error("You can't listen.");
+        }
+        const loggedInUser: User | null = await getUser(token);
+        return { loggedInUser };
+      },
+      onDisconnect: () => {
+        console.log('Disconnected!');
       },
     },
-  ],
-});
+    wsServer
+  );
 
-app.use(logger('tiny'));
-app.use('/static', express.static('uploads'));
-app.use(graphqlUploadExpress());
-apollo.start().then(() => {
+  const apollo: ApolloServer<ExpressContext> = new ApolloServer({
+    schema,
+    context: async ({ req }) => {
+      const loggedInUser: User | null = await getUser(req.headers.token);
+      return {
+        client,
+        loggedInUser,
+        protectedResolver,
+      };
+    },
+    csrfPrevention: true,
+    cache: 'bounded',
+    plugins: [
+      ApolloServerPluginLandingPageGraphQLPlayground,
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              subscriptionServer.close();
+            },
+          };
+        },
+      },
+    ],
+  });
+
+  await apollo.start();
   apollo.applyMiddleware({ app });
-});
 
-httpServer.listen(PORT, () => {
-  console.log(`🚀 Server is Running on http://localhost:${PORT} ✅`);
-});
+  httpServer.listen(PORT, () => {
+    console.log(`🚀 Server is Running on http://localhost:${PORT} ✅`);
+  });
+};
+
+startServer();
