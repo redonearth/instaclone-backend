@@ -5,7 +5,7 @@ const resolvers: Resolvers = {
   Mutation: {
     createAccount: async (
       _,
-      { firstName, lastName, username, email, password },
+      { name, username, email, password },
       { client }
     ) => {
       try {
@@ -27,10 +27,9 @@ const resolvers: Resolvers = {
         const uglyPassword = await bcrypt.hash(password, 10);
         await client.user.create({
           data: {
+            name,
             username,
             email,
-            firstName,
-            lastName,
             password: uglyPassword,
           },
         });

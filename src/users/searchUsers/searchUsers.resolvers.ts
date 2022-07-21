@@ -12,12 +12,7 @@ const resolvers: Resolvers = {
               },
             },
             {
-              firstName: {
-                startsWith: keyword,
-              },
-            },
-            {
-              lastName: {
+              name: {
                 startsWith: keyword,
               },
             },

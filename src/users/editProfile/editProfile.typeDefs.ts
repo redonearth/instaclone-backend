@@ -4,8 +4,7 @@ export default gql`
   scalar Upload
   type Mutation {
     editProfile(
-      firstName: String
-      lastName: String
+      name: String
       username: String
       email: String
       password: String
